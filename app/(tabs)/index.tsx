@@ -1,15 +1,15 @@
-import { StyleSheet,ScrollView } from 'react-native';
-import { Text, View } from '@/components/Themed';
-import { useFonts, MerriweatherSans_400Regular } from '@expo-google-fonts/merriweather-sans';
-import AppLoading from 'expo-app-loading';
+import { StyleSheet,ScrollView, Image, View } from 'react-native';
+import { Text  } from '@/components/Themed';
+import { useFonts, MerriweatherSans_400Regular, MerriweatherSans_700Bold } from '@expo-google-fonts/merriweather-sans';
 
 export default function TabOneScreen() {
   let [fontsLoaded] = useFonts({
     MerriweatherSans_400Regular,
+    MerriweatherSans_700Bold
   });
   
   if (!fontsLoaded) {
-    return <AppLoading />;
+    return null;
   } else {
   const spacing = 12;
   return (
@@ -17,10 +17,13 @@ export default function TabOneScreen() {
       <ScrollView>
           <View style={{paddingTop:spacing}}>
             <View style={styles.header}>
-              <Text style={styles.weekLunchText}>Lunch Menu</Text>
+              <Image style={{position:'relative', height:50}} source={{uri: 'https://epicurean-group.com/wp-content/uploads/2022/08/Epicurean_LandscapeLogo_CORRECT.png'}}/>
+              <View style={{flexDirection: 'column'}}>
+                <Text style={styles.weekLunchText}>Athenian</Text>
+                <Text style={styles.weekLunchText}>Menu</Text>
+              </View>
             </View>
           </View>
-          <View lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
           <View style={{paddingTop:spacing}}>
             <View style={styles.box}>
               <Text style={{fontFamily:"MerriweatherSans_400Regular", fontSize: 30}}>What for Lunch today?</Text>
@@ -39,7 +42,8 @@ const styles = StyleSheet.create({
     height: 270,
   },
   weekLunchText: {
-    fontSize: 20
+    fontFamily:"MerriweatherSans_700Bold",
+    fontSize: 25  
   },
   container: {
     flex: 1,
@@ -47,8 +51,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   header: {
+    flexDirection:'row',
     alignItems: 'center',
-    justifyContent: 'center',
+    justifyContent: 'space-evenly',
     backgroundColor: "#0097b2",
     borderRadius:20,
     height: 70,

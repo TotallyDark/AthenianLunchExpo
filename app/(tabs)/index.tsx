@@ -1,8 +1,11 @@
-import { StyleSheet,ScrollView, Image, View } from 'react-native';
+import { StyleSheet,ScrollView, Image, View, } from 'react-native';
 import { Text  } from '@/components/Themed';
 import { useFonts, MerriweatherSans_400Regular, MerriweatherSans_700Bold } from '@expo-google-fonts/merriweather-sans';
 
+const logoImg = require("../../assets/images/Logo.png");
+
 export default function TabOneScreen() {
+  
   let [fontsLoaded] = useFonts({
     MerriweatherSans_400Regular,
     MerriweatherSans_700Bold
@@ -17,7 +20,7 @@ export default function TabOneScreen() {
       <ScrollView>
           <View style={{paddingTop:spacing}}>
             <View style={styles.header}>
-              <Image style={{position:'relative', height:50}} source={{uri: 'https://epicurean-group.com/wp-content/uploads/2022/08/Epicurean_LandscapeLogo_CORRECT.png'}}/>
+              <Image style={{position:'relative', height:50, width:150}} source={logoImg}/>
               <View style={{flexDirection: 'column'}}>
                 <Text style={styles.weekLunchText}>Athenian</Text>
                 <Text style={styles.weekLunchText}>Menu</Text>
@@ -26,7 +29,7 @@ export default function TabOneScreen() {
           </View>
           <View style={{paddingTop:spacing}}>
             <View style={styles.box}>
-              <Text style={{fontFamily:"MerriweatherSans_400Regular", fontSize: 30}}>What for Lunch today?</Text>
+              <Text style={{fontFamily:"MerriweatherSans_700Bold", fontSize: 30}}>What's for Lunch?</Text>
             </View>
           </View>
       </ScrollView>
@@ -43,7 +46,8 @@ const styles = StyleSheet.create({
   },
   weekLunchText: {
     fontFamily:"MerriweatherSans_700Bold",
-    fontSize: 25  
+    fontSize: 25,  
+    color: 'black'
   },
   container: {
     flex: 1,
@@ -60,6 +64,7 @@ const styles = StyleSheet.create({
     
   },
   box: {
+    paddingTop: 10, 
     alignItems: "center",
     height: 200,
     width: 370,

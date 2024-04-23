@@ -4,7 +4,7 @@ import { v } from "convex/values";
 export const addItem = mutation({
     args: {kitchen: v.string(), food: v.string()},
     handler: async ({db}, args) => {
-      await db.insert("TodayLunch", args);
+      return await db.insert("TodayLunch", args);
       }
 });
 
@@ -22,3 +22,9 @@ export const remove = mutation({
   }
 });
 
+export const update = mutation({
+  args: {id: v.id("TodayLunch"), food: v.string()},
+  handler: async (ctx, args) => {
+    await ctx.db.patch(args.id, { food: args.food });
+  }
+})

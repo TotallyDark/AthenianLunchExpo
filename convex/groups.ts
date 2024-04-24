@@ -28,3 +28,4 @@ export const update = mutation({
     await ctx.db.patch(args.id, { food: args.food });
   }
 })
+

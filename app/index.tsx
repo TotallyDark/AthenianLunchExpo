@@ -1,11 +1,11 @@
-import { StyleSheet,ScrollView, Image, View, } from 'react-native';
-import { Text  } from '@/components/Themed';
+import { StyleSheet,ScrollView, Image, View, Text, SafeAreaView } from 'react-native';
 import { useFonts, MerriweatherSans_400Regular, MerriweatherSans_700Bold } from '@expo-google-fonts/merriweather-sans';
 import { useQuery } from 'convex/react';
-import { api } from '../../convex/_generated/api'
+import { api } from '../convex/_generated/api'
+import { TouchableOpacity } from 'react-native';
+import { Link } from 'expo-router';
 
-
-const logoImg = require("../../assets/images/Logo.png");
+const logoImg = require("../assets/images/Logo.png");
 
 export default function TabOneScreen() {
   const groups = useQuery(api.groups.get) || [];
@@ -21,7 +21,7 @@ export default function TabOneScreen() {
   const spacing = 10;
   return (
     <View style={styles.container}>
-      <ScrollView>
+      <ScrollView style={{paddingTop: 40} }>
           <View style={{paddingTop:spacing}}>
             <View style={styles.header}>
               <Image style={{position:'relative', height:50, width:150}} source={logoImg}/>
@@ -37,11 +37,11 @@ export default function TabOneScreen() {
               <View style={{alignItems:'flex-start'}}>
                 {groups.map((group) => (
                   <View>
-                    <View>
-                      <Text style={{fontSize:20}}>{group.kitchen}</Text>
+                    <View style={{width:370, /* 370 is the width of red container*/  alignItems:'center'}}> 
+                      <Text style={{fontSize:20, color: 'white', fontFamily: "MerriweatherSans_400Regular", width:'auto'}}>{group.kitchen}</Text>
                     </View>
-                    <View style={{paddingBottom:10}}>
-                      <Text style={{fontSize:12, color:'#e9c46a'}}>{group.food}</Text>
+                    <View style={{paddingBottom:10, paddingLeft: 20}}>
+                      <Text style={{fontSize:15, color:'#e9c46a', fontFamily:"MerriweatherSans_700Bold"}}>{group.food}</Text>
                     </View>
                   </View>
                 ))}

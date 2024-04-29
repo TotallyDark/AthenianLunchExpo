@@ -86,7 +86,7 @@ LINK_1_DATE = DATES[0].text
 LINK_2_DATE = DATES[1].text
 
 month = date.today().month
-day = date.today().day
+day = date.today().day +1
 weekday = date.today().weekday()
 
 LINK = "null"
@@ -153,12 +153,23 @@ elif weekday == 6:  # Sunday
     y4 = 1890  # top left
     y5 = 2084  # bottom right
 
+pdfFile = 'C:/Users/willi/Desktop/Athenian Lunch Menu/file.pdf'
+
 page.cropbox.upper_left = (612 * (70) / (1700), (1 - y4 / 2200) * 792)
 page.cropbox.lower_right = (612 * (1510) / (1700), (1 - y5 / 2200) * 792)
 writer.add_page(page)
-
-with open(os.path.join('C:/Users/willi/Desktop/Athenian Lunch Menu/file.pdf'), 'wb') as fp:
+with open(os.path.join(pdfFile), 'wb') as fp:
     writer.write(fp)
+
+with open(pdfFile, 'rb') as file:
+    reader = PdfReader(file)
+    for page_num in range(len(reader.pages)):
+        page = reader.pages[page_num]
+        writer.add_page(page)
+    new_pdf_file = f"{pdfFile.split('.')[0]}"
+    with open(new_pdf_file, "wb") as fp:
+        writer.write(fp)
+
 
 pdf_path = "C:/Users/willi/Desktop/Athenian Lunch Menu/file.pdf"
 output_path = "C:/Users/willi/Desktop/Athenian Lunch Menu/output.csv"

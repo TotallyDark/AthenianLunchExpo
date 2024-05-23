@@ -9,6 +9,7 @@ const logoImg = require("../assets/images/Logo.png");
 
 export default function TabOneScreen() {
   const groups = useQuery(api.groups.get) || [];
+  const TodayImg = useQuery(api.groups.list) || "";
 
   let [fontsLoaded] = useFonts({
     MerriweatherSans_400Regular,
@@ -30,6 +31,7 @@ export default function TabOneScreen() {
                 <Text style={styles.weekLunchText}>Menu</Text>
               </View>
             </View>
+            
           </View>
           <View style={{paddingTop:spacing-5}}>
             <View style={styles.box}>
@@ -45,13 +47,20 @@ export default function TabOneScreen() {
                     </View>
                   </View>
                 ))}
+                
               </View>
+              
             </View>
+ 
           </View>
+          <Image style={{position:'relative', height:500, width:'auto'}} source={{uri:TodayImg}}  />
           <View style={{paddingTop:spacing}}>
             <View style={styles.box2}>
               <Text style={{fontFamily:"MerriweatherSans_400Regular", fontSize: 35, color: 'white'}}>Tomorrow Lunch?</Text>
             </View>
+          </View>
+          <View>
+          
           </View>
       </ScrollView>
     </View>

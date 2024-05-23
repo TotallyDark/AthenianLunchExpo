@@ -2,6 +2,9 @@ import { defineSchema, defineTable } from "convex/server";
 import { v } from "convex/values";
 
 export default defineSchema({
+  TodayLunchPhoto: defineTable({
+    icon_url: v.string(),
+  }),
   TodayLunch: defineTable({
     food: v.string(),
     kitchen: v.string(),
@@ -16,3 +19,4 @@ export default defineSchema({
     name: v.string(),
   }),
 });
+

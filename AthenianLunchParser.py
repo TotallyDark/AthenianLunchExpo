@@ -3,7 +3,7 @@ import os
 from datetime import date;
 import requests
 from bs4 import BeautifulSoup
-from PyPDF2 import PdfReader, PdfWriter
+from pypdf import PdfReader, PdfWriter
 from urllib. request import Request, urlopen
 import tabula
 from convex import ConvexClient
@@ -11,7 +11,7 @@ import csv
 
 def convexUpdate():
     client = ConvexClient('https://wary-lynx-98.convex.cloud')
-    output_path = "C:/Users/willi/Desktop/Athenian Lunch Menu/output.csv"
+    output_path = "C:/Users/willi/Desktop/AthenianLunchMenu/output.csv"
     datafile = open(output_path, 'r')
     datareader = csv.reader(datafile, delimiter=';')
     data = []
@@ -27,7 +27,7 @@ def convexUpdate():
     ids = [item.get('_id') for item in groups]
     for a in ids:
         client.mutation("groups:remove", dict(id=a))
-    
+
     foodStr = ""
     kitchenStr = ""
     #Inserts Table
@@ -46,6 +46,17 @@ def convexUpdate():
             else:
                 temp = client.mutation("groups:addItem", dict(food=foodStr, kitchen=kitchenStr))
         i=i+1
+    selected_image = open('TodayImg.png',   'rb')
+
+    send_image_url = client.mutation("groups:generateUploadUrl")
+
+    response = requests.post(send_image_url, files={'file': selected_image})
+    selected_image.close()
+
+    if response.ok:
+        print("Image uploaded successfully")
+    else:
+        print("Failed to upload image")
 
 # https://stackoverflow.com/questions/16627227/problem-http-error-403-in-python-3-web-scraping
 
@@ -79,14 +90,13 @@ def getEndMonth(string):
     string = string[string.index('-'):len(string)]
     return int(string[1])
 
-
 LINK_1 = MENU_LINKS[0].get('href')
 LINK_2 = MENU_LINKS[1].get('href')
 LINK_1_DATE = DATES[0].text
 LINK_2_DATE = DATES[1].text
 
 month = date.today().month
-day = date.today().day +1
+day = date.today().day 
 weekday = date.today().weekday()
 
 LINK = "null"
@@ -101,11 +111,11 @@ print("Month: " + str(month))
 
 if getStartDay(LINK_1_DATE) <= day and day <= getEndDay(LINK_1_DATE):
     LINK = LINK_1
-elif month == getStartMonth(LINK_1_DATE) and month != getEndMonth(LINK_1_DATE):
+elif month == getEndMonth(LINK_1_DATE) and month != getStartMonth(LINK_1_DATE):
     LINK = LINK_1
 elif getStartDay(LINK_2_DATE) <= day and day <= getEndDay(LINK_2_DATE):
     LINK = LINK_2
-elif month == getStartMonth(LINK_2_DATE) and month != getEndMonth(LINK_2_DATE):
+elif month == getEndMonth(LINK_2_DATE) and month != getStartMonth(LINK_2_DATE):
     LINK = LINK_2
 
 print(LINK)
@@ -153,7 +163,7 @@ elif weekday == 6:  # Sunday
     y4 = 1890  # top left
     y5 = 2084  # bottom right
 
-pdfFile = 'C:/Users/willi/Desktop/Athenian Lunch Menu/file.pdf'
+pdfFile = 'C:/Users/willi/Desktop/AthenianLunchMenu/file.pdf'
 
 page.cropbox.upper_left = (612 * (70) / (1700), (1 - y4 / 2200) * 792)
 page.cropbox.lower_right = (612 * (1510) / (1700), (1 - y5 / 2200) * 792)
@@ -171,8 +181,10 @@ with open(pdfFile, 'rb') as file:
         writer.write(fp)
 
 
-pdf_path = "C:/Users/willi/Desktop/Athenian Lunch Menu/file.pdf"
-output_path = "C:/Users/willi/Desktop/Athenian Lunch Menu/output.csv"
+pdf_path = "C:/Users/willi/Desktop/AthenianLunchMenu/file.pdf"
+output_path = "C:/Users/willi/Desktop/AthenianLunchMenu/output.csv"
+
+
 
 tabula.convert_into(pdf_path, output_path, output_format="csv", pages='all')
 

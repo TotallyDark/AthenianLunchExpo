@@ -19,6 +19,6 @@
     "skipLibCheck": true,
     "noEmit": true
   },
-  "include": ["./**/*"],
-  "exclude": ["./_generated"]
+  "include": ["./**/*", "../webpack.config.js"],
+  "exclude": ["./_generated"],
 }

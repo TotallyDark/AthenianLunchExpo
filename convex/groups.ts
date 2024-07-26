@@ -17,6 +17,7 @@ export const get = query({
   }
 });
 
+
 export const list = query({//collecting images from db (https://docs.convex.dev/file-storage/serve-files)
   args: {},
   handler: async (ctx) => {
@@ -75,5 +76,5 @@ export const sendImage = mutation({
   handler: async (ctx, args) => {
     await ctx.db.patch(args.imgId, { icon_url: args.storageId });
   },
-});
+})
 

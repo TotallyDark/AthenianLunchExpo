@@ -13,13 +13,11 @@
     "preset": "jest-expo"
   },
   "dependencies": {
-    "@expo-google-fonts/dev": "^0.2.3",
-    "@expo-google-fonts/inter": "^0.2.3",
-    "@expo-google-fonts/merriweather-sans": "^0.2.3",
     "@expo/vector-icons": "^14.0.0",
+    "@mui/material": "^5.15.18",
     "@react-navigation/native": "^6.0.2",
     "convex": "^1.11.1",
-    "expo": "^51.0.8",
+    "expo": "^51.0.22",
     "expo-app-loading": "^2.1.1",
     "expo-asset": "~9.0.2",
     "expo-font": "~11.10.3",

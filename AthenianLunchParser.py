@@ -111,11 +111,11 @@ print("Month: " + str(month))
 
 if getStartDay(LINK_1_DATE) <= day and day <= getEndDay(LINK_1_DATE):
     LINK = LINK_1
-elif month == getEndMonth(LINK_1_DATE) and month != getStartMonth(LINK_1_DATE):
+elif month != getEndMonth(LINK_1_DATE) and month == getStartMonth(LINK_1_DATE):
     LINK = LINK_1
 elif getStartDay(LINK_2_DATE) <= day and day <= getEndDay(LINK_2_DATE):
     LINK = LINK_2
-elif month == getEndMonth(LINK_2_DATE) and month != getStartMonth(LINK_2_DATE):
+elif month != getEndMonth(LINK_2_DATE) and month == getStartMonth(LINK_2_DATE):
     LINK = LINK_2
 
 print(LINK)

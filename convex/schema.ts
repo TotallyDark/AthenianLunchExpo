@@ -18,5 +18,10 @@ export default defineSchema({
     description: v.string(),
     name: v.string(),
   }),
+  Date: defineTable({
+    day: v.string(),
+    month: v.string(),
+    year: v.string(),
+  }),
 });
 

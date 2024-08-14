@@ -6,8 +6,9 @@ export default defineSchema({
     icon_url: v.string(),
   }),
   TodayLunch: defineTable({
+    menu: v.string(),
     food: v.string(),
-    kitchen: v.string(),
+    kitchen: v.optional(v.string()),
   }),
   food: defineTable({ text: v.string() }),
   groups: defineTable({

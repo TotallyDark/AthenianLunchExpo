@@ -11,7 +11,7 @@ import csv
 
 def convexUpdate():
     client = ConvexClient('https://wary-lynx-98.convex.cloud')
-    output_path = "C:/Users/willi/Desktop/AthenianLunchMenu/output.csv"
+    output_path = "/Users/wnie/Documents/GitHub/AthenianLunchExpo/output.csv"
     datafile = open(output_path, 'r')
     datareader = csv.reader(datafile, delimiter=';')
     data = []
@@ -21,6 +21,7 @@ def convexUpdate():
 
     str = data[0][0]
     i=0
+    menuCount =1
 
     #Clears Table
     groups = client.query("groups:get", dict())
@@ -41,10 +42,17 @@ def convexUpdate():
 
         if(foodStr!=prevFoodStr):
             #print(kitchenstr + ", " + foodstr)
+            print("i = " , i)
             if(kitchenStr == prevKitchenStr and temp != None):
                 client.mutation("groups:update", dict(id=temp,food= prevFoodStr + "\n\n" +foodStr))
             else:
-                temp = client.mutation("groups:addItem", dict(food=foodStr, kitchen=kitchenStr))
+                if(menuCount==1):
+                    temp = client.mutation("groups:addItem", dict(food=foodStr, kitchen=kitchenStr, menu="Breakfast"))
+                elif(menuCount>=2 and menuCount<=3):
+                    temp = client.mutation("groups:addItem", dict(food=foodStr, kitchen=kitchenStr, menu="Lunch"))
+                else:
+                    temp = client.mutation("groups:addItem", dict(food=foodStr, kitchen=kitchenStr, menu="Dinner"))
+                menuCount+=1
         i=i+1
     selected_image = open('TodayImg.png',   'rb')
 
@@ -99,7 +107,7 @@ month = date.today().month
 day = date.today().day 
 weekday = date.today().weekday()
 
-LINK = "null"
+LINK = LINK_2
 
 print(getStartDay(LINK_2_DATE))
 print(getStartMonth(LINK_2_DATE))
@@ -163,7 +171,7 @@ elif weekday == 6:  # Sunday
     y4 = 1890  # top left
     y5 = 2084  # bottom right
 
-pdfFile = 'C:/Users/willi/Desktop/AthenianLunchMenu/file.pdf'
+pdfFile = '/Users/wnie/Documents/GitHub/AthenianLunchExpo/file.pdf'
 
 page.cropbox.upper_left = (612 * (70) / (1700), (1 - y4 / 2200) * 792)
 page.cropbox.lower_right = (612 * (1510) / (1700), (1 - y5 / 2200) * 792)
@@ -181,8 +189,8 @@ with open(pdfFile, 'rb') as file:
         writer.write(fp)
 
 
-pdf_path = "C:/Users/willi/Desktop/AthenianLunchMenu/file.pdf"
-output_path = "C:/Users/willi/Desktop/AthenianLunchMenu/output.csv"
+pdf_path = "/Users/wnie/Documents/GitHub/AthenianLunchExpo/file.pdf"
+output_path = "/Users/wnie/Documents/GitHub/AthenianLunchExpo/output.csv"
 
 
 

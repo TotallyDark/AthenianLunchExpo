@@ -1,14 +1,11 @@
-import { StyleSheet, Text, View } from 'react-native'
+import { StyleSheet, View } from 'react-native'
+import { WebView } from 'react-native-webview'
 import React from 'react'
 
 const Feedback = () => {
   return (
-    <View>
-      <Text style={{fontSize:20}}>Leave some feedback for us! :</Text>
-    </View>
-  )
+    <WebView source={{uri:"https://forms.gle/Q3QSTu8PkfGXuX1p7"}}/>
+  );
 }
 
 export default Feedback
-
-const styles = StyleSheet.create({})

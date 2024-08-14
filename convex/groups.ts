@@ -4,16 +4,42 @@ import { v } from "convex/values";
 
 
 export const addItem = mutation({
-    args: {kitchen: v.string(), food: v.string()},
+    args: {kitchen: v.string(), food: v.string(), menu: v.string()},
     handler: async ({db}, args) => {
       return await db.insert("TodayLunch", args);
       }
 });
 
 export const get = query({
-  args: {},
   handler: async (ctx) => {
     return await ctx.db.query("TodayLunch").collect()
+  }
+});
+
+export const getLunch = query({
+  handler: async (ctx) => {
+    return await ctx.db
+    .query("TodayLunch")
+    .filter((q) => q.eq(q.field("menu"), "Lunch"))
+    .collect()
+  }
+});
+
+export const getBreakfast = query({
+  handler: async (ctx) => {
+    return await ctx.db
+    .query("TodayLunch")
+    .filter((q) => q.eq(q.field("menu"), "Breakfast"))
+    .collect()
+  }
+});
+
+export const getDinner = query({
+  handler: async (ctx) => {
+    return await ctx.db
+    .query("TodayLunch")
+    .filter((q) => q.eq(q.field("menu"), "Dinner"))
+    .collect()
   }
 });
 

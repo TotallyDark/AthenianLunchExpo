@@ -34,7 +34,15 @@ if(!fontsLoaded && !error) return null
         <Stack.Screen 
         name='index'
         options={{
+          title: "Menu",
           headerShown: false,
+        }}
+        />
+        <Stack.Screen
+        name='feedback'
+        options={{
+          title: "Feedback",
+          headerShown:true,
         }}
         />
       </Stack>

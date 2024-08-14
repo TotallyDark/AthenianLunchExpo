@@ -1,128 +1,158 @@
-import { StyleSheet,ScrollView, Image, View, Text, SafeAreaView, TouchableOpacity } from 'react-native';
+import { StyleSheet,ScrollView, View, Image, Text, SafeAreaView, TouchableOpacity, Button } from 'react-native';
+import { useState } from 'react';
 import { useQuery } from 'convex/react';
 import { api } from '../convex/_generated/api'
 import { Link } from 'expo-router';
+import Topbar from './topbar';
+import tw from 'twrnc';
+import Box from './box';
 
-const logoImg = require("../assets/icons/Logo.png");
 const feedbackImg = require("../assets/icons/feedback-icon.png");
-//const date = new Date().toString();
-const date = "Whats for Lunch?"
+const breakfastImg = require("../assets/icons/breakfast-icon.png");
+const lunchImg = require("../assets/icons/lunch-icon.png")
+const dinnerImg = require("../assets/icons/dinner-icon.png")
 
 export default function TabOneScreen() {
-  const groups = useQuery(api.groups.get) || [];
-  const TodayImg = useQuery(api.groups.list) || "";
+  const lunchQuery = useQuery(api.groups.getLunch) || [
+    {food: "loading", kitchen: "loading", _creationTime: "loading"}, 
+    {food:"loading", kitchen: "loading"}];
+  const breakfastQuery = useQuery(api.groups.getBreakfast) || [{food:"loading", kitchen:"loading"}]
+  const dinnerQuery = useQuery(api.groups.getDinner) || [{food:"loading", kitchen:"loading"}]
 
-  const spacing = 10;
+  const TodayImg = useQuery(api.groups.list) || "";
+  let date = new Date(lunchQuery[0]._creationTime || 1200).toDateString()
+  let lunchKitchen = lunchQuery[0].kitchen
+  let lunch = lunchQuery[0].food
+  let saladKitchen = lunchQuery[1].kitchen
+  let salad = lunchQuery[1].food
+
+  let breakfastKitchen = breakfastQuery[0].kitchen
+  let breakfast = breakfastQuery[0].food
+
+  let dinnerKitchen = dinnerQuery[0].kitchen
+  let dinner = dinnerQuery[0].food
+
+
+  const [boxBreakfast, setBoxBreakfast] = useState<boolean>(false)
+  const [boxLunch, setBoxLunch] = useState<boolean>(true)
+  const [boxDinner, setBoxDinner] = useState<boolean>(false)
+
+  const handleBreakfast = () => {
+    setBoxBreakfast(true)
+    setBoxDinner(false)
+    setBoxLunch(false)
+  }
+  const handleLunch = () => {
+    setBoxBreakfast(false)
+    setBoxDinner(false)
+    setBoxLunch(true)
+  }
+  const handleDinner = () => {
+    setBoxBreakfast(false)
+    setBoxDinner(true)
+    setBoxLunch(false)
+  }
   return (
     <SafeAreaView style={styles.container}>
-      
       <ScrollView>
-          <View>
-            <View style={styles.header}>
-              <Image style={{position:'relative', height:50, width:150}} source={logoImg}/>
-              <View style={{flexDirection: 'column'}}>
-                <Text style={styles.weekLunchText}>Athenian</Text>
-                <Text style={styles.weekLunchText}>Menu</Text>
+      <View style={tw`flex flex-col gap-2`}>
+      <Topbar date={date}/>
+
+    <View style={{alignItems:'center'}}>
+      <View style={tw`flex flex-row gap-2`}>
+          <View style={{display: 'flex', flexDirection:'column', alignItems:'center'}}>
+            <TouchableOpacity onPress={() => handleBreakfast()}>
+              <View style={{width:75, height:50, borderRadius: 20,
+                justifyContent:'center', alignItems:'center', backgroundColor: boxBreakfast ? '#283618': '#606c38'}}>
+                  <Image source={breakfastImg} style={{width:40, height:40, tintColor: boxBreakfast ? '#606c38':'#283618'}}/>
               </View>
-            </View>
+            </TouchableOpacity>
+            <Text style={{color:'white', marginBottom:-10}}>Breakfast</Text>
           </View>
-          <View style={{paddingTop:spacing-5}}>
-            <View style={styles.box}> 
-              <Text style={{fontFamily:'Merriweather_Bold', fontSize: 35, color: 'white', paddingBottom:20}}>{date}</Text>
-              <View style={{alignItems:'flex-start'}}>
-                {groups.map((group) => (
-                  <View>
-                    <View style={{width:370, /* 370 is the width of red container*/  alignItems:'center'}}> 
-                      <Text style={{fontSize:20, color: 'white', fontFamily: "Merriweather_Regular", width:'auto'}}>{group.kitchen}</Text>
-                    </View>
-                    <View style={{paddingBottom:10, paddingLeft: 20}}>
-                      <Text style={{fontSize:15, color:'#e9c46a', fontFamily:"Merriweather_Bold"}}>{group.food}</Text>
-                    </View>
-                  </View>
-                ))}
-                
-              </View>
-              
-            </View>
- 
+
+          <TouchableOpacity onPress={() => handleLunch()}>
+          <View style={{width:75, height:75, marginBottom:-12, marginTop:-5, 
+            borderRadius: 20, alignItems:'center',justifyContent:'center', backgroundColor: boxLunch ? '#283618': '#606c38'}}>
+            <Image source={lunchImg} style={{width:50, height:50, tintColor: boxLunch ? '#606c38':'#283618'}}/>
           </View>
-          <View style={{paddingTop:5}}>
-            <Image style={{height:TodayImg.length, position:'relative', borderRadius:20}} source={{uri:TodayImg}}  />
-          </View>
-      </ScrollView>
-      
-      <View style={styles.feedback}>
-        <Link href="/feedback" asChild>
-          <TouchableOpacity style={{alignContent:'center'}}> 
-            <Image source={feedbackImg} style={{height:50, width:'auto'}}/>
           </TouchableOpacity>
-        </Link>
+
+        <View style={{display: 'flex', flexDirection:'column', alignItems:'center'}}>
+          <TouchableOpacity onPress={() => handleDinner()}>
+            <View style={{width:75, height:50, borderRadius: 20,alignItems:'center', justifyContent:'center',backgroundColor: boxDinner ? '#283618': '#606c38'}}>
+              <Image source={dinnerImg} style={{width:40, height:40, tintColor: boxDinner ? '#606c38':'#283618'}}/>
+            </View>
+          </TouchableOpacity>
+          <Text style={{color:'white', marginBottom:-10}}>Dinner</Text>
+        </View>
+    </View>
+    </View>
+
+
+      <View>
       </View>
-      
-      
+          <Box 
+          colorBorder='#f9c80e'
+          color='#ee964b'
+          subTitleColor='#f9c80e'
+          mainTitle='Breakfast'
+          subText={breakfast}
+          subTitle={breakfastKitchen}
+          visible={boxBreakfast}
+          />
+          <Box 
+          colorBorder='#9F2909'
+          color={'#b94728'}
+          mainTitle='Lunch'
+          subText={lunch}
+          subTitle={lunchKitchen}
+          imgurl={TodayImg}
+          visible={boxLunch}
+          />
+          <Box 
+          colorBorder='green'
+          color='#6DB53E'
+          mainTitle='Salad Bar'
+          subText={salad}
+          subTitle={saladKitchen}
+          visible={boxLunch}
+          />
+          <Box 
+          colorBorder='#353535'
+          color='#3c6e71'
+          mainTitle='Dinner'
+          subText={dinner}
+          subTitle={dinnerKitchen}
+          visible={boxDinner}
+          />
+          
+          <Link href={"/feedback"} asChild>
+            <TouchableOpacity>
+            <View style={styles.feedbackBar}>
+              <Text style={{fontSize:20, color:'white'}}> Is something incorrect? Report it here! </Text>
+            </View>
+            </TouchableOpacity>
+          </Link>
+      </View>
+      </ScrollView>
     </SafeAreaView>
   );
 }
 
 
 const styles = StyleSheet.create({
-  feedback: {
-    position: "absolute",
-    right:-30, 
-    top: 100,
-    borderColor: 'green', 
-    width: 90, 
-    height:75, 
-    backgroundColor: '#6DB53E', 
-    borderRadius: 50, 
-    borderStyle:'solid', 
-    borderWidth: 5
-  },
-  space: {
-    justifyContent: 'space-evenly',
-    backgroundColor: '#D2B27B',
-    height: 270,
-  },
-
-  weekLunchText: {
-    fontFamily:"Merriweather_Bold",
-    fontSize: 25,  
-    color: 'black'
+  feedbackBar: {
+    alignItems: "center",
+    justifyContent:'center',
+    height: 50,
+    backgroundColor: '#7f7f7f',
+    borderRadius:20,
+    borderWidth: 5,
+    borderColor: '#595959',
   },
   container: {
     flex: 1,
     backgroundColor: '#D2B27B',
     alignItems: 'center',
   },
-  header: {
-    flexDirection:'row',
-    alignItems: 'center',
-    borderStyle:'solid',
-    borderWidth: 5,
-    borderColor: '#026172',
-    justifyContent: 'space-evenly',
-    backgroundColor: "#0097b2",
-    borderRadius:20,
-    height: 70,
-    
-  },
-  box: {
-    paddingTop: 10, 
-    borderStyle: "solid",
-    borderColor: '#9F2909',
-    borderWidth: 5, 
-    alignItems: "center",
-    width: 370,
-    backgroundColor: '#b94728',
-    borderRadius:20,
-  },
-  box2: {
-    paddingTop: 10, 
-    alignItems: "center",
-    height: 400,
-    width: 370,
-    backgroundColor: '#0097b2',
-    borderRadius:20,
-  }
-  
 });
